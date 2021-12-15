@@ -6,6 +6,13 @@ let path = require('path');
 //path.dirname(path) 返回 path 的目录名
 //console.log(path.dirname('/Users/常见内置模块/1.path'));// /Users/常见内置模块
 
+// 获取路径的信息
+const filepath = '/User/why/abc.txt';
+
+//console.log(path.dirname(filepath));
+//console.log(path.basename(filepath));
+//console.log(path.extname(filepath));
+
 //var myPath = path.dirname(__dirname + '/test/util/helloWorld.js');// /Users/i337605/Documents/GitHub/Node_Learning/常见内置模块/1.path/test/util
 //console.log(myPath);
 
@@ -19,5 +26,5 @@ var filepath = '/tmp/demo/js/test.js';
 console.log(path.extname(filepath));
  */
 
-console.log(path.join('/foo', 'bar', 'baz/asdf', 'quux', '..'));
+//console.log(path.join('/foo', 'bar', 'baz/asdf', 'quux', '..'));
 
