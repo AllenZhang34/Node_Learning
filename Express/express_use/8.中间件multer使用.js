@@ -17,14 +17,14 @@ const upload = multer({
   storage
 });
 
-app.use(upload.any());
+//app.use(upload.any());
 
 app.post('/products', (req, res, next) => {
   console.log(req.body);
   res.end('Upload Products Success');
 });
 
-app.post('/upload', upload.single('file'), (req, res, next) => {
+app.post('/upload', upload.array('file'), (req, res, next) => {
   console.log(req.files);
   res.end('Upload file success');
 });
