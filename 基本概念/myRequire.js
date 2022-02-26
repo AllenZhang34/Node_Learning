@@ -106,3 +106,15 @@ result2 = myRequire('./a');
 
 console.log(result);
 // 对象的加载就是读取文件，将文件的内容手动挂载到 module.exports上，因为require返回的就是 module.exports 所以可以加载到了
+
+
+// 文件模块， 自己写的模块。 查找问题 
+// 文件模块查找机制 , 可能引用的是一个文件夹 
+
+//const path = require('path')
+//const r = require(path.resolve(__dirname,'4.eventloop.js')); // 去尝试添加 js 和 .json后缀  每个版本有点差异， 先找文件，在查找文件夹，老版本的话如果文件夹中有package.json
+// 如果文件不存在则会查找文件夹中的index.js, 如果有package.json则以package.json 为准。 不会默认查找index了
+
+
+// 代码不要有歧义
+// 文件模块有2中，可以用相对路径，也可以用绝对路径， 只要是相对或者绝对路径我们就叫他文件模块，自定义模块
