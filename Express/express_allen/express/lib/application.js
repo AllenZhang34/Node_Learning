@@ -1,50 +1,31 @@
 const http = require('http');
 const url = require('url');
 const Router = require('./router');
+const methods = require('methods');
 function Application() {
-  //应用和路由也是耦合在一起的
-  /* 
-    this.router = [
-    {
-      method: 'all',
-      pathname: '*',
-      handler(req, res) {
-        res.end(`Cannot ${req.method} ${req.url}`);
-      }
-    }
-  ];
-   */
-
-  this.router = new Router(); //创建一个路由系统
+  this.router = new Router();
 }
 
-Application.prototype.get = function (pathname, ...handlers) {
-  /* this.router.push({
-    method: 'get',
-    pathname,
-    handler
-  }); */
-  this.router.get(pathname, handler);
+methods.concat('all').forEach((method) => {
+  Application.prototype[method] = function (path, ...handles) {
+    this.router[method](path, handles);
+  };
+});
+//中间件作用 (1)可以确定是否向下执行 （2）扩展属性和方法 （3）做权限处理，提出公共逻辑
+Application.prototype.use = function () {
+  this.router.use(...arguments);
 };
-
 Application.prototype.listen = function () {
+  function done(req, res) {
+    res.end(`Cannot ${req.method} ${req.url}`);
+  }
   const server = http.createServer((req, res) => {
-    //这里可以稍做优化，当路由系统处理不了，应用返回一个无法找到
-    function done() {
-      res.end(`Cannot ${req.method} ${req.url}`);
-    }
-    /*     let { pathname } = url.parse(req.url);
-    let method = req.method.toLowerCase();
-    for (let i = 1; i < this.router.length; i++) {
-      let { method: routeMethod, pathname: routePath, handler } = this.router[i];
-      if (method === routeMethod && pathname === routePath) {
-        return handler(req, res);
-      }
-    }
-    this.router[0].handler(req, res); */
     this.router.handle(req, res, done);
   });
   server.listen(...arguments);
 };
 
 module.exports = Application;
+
+//new Application 注册路由 创建服务
+//new Router() 注册路由配置 请求时匹配路由
