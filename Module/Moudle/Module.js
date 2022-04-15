@@ -1,3 +1,26 @@
+//global上有属性直接访问的叫全局属性
+//require exports module __dirname __filename 也可以直接访问，他们不在global上
+//
+// 模块化规范 ~  commonjs规范 amd cmd esm模块 umd systemjs
+// 为什么要有模块化
+// 为了解决命名冲突问题 ( “单例模式” 不能完全解决这些问题)
+// 用文件拆分的方式 配合 iife 子执行函数来解决
+// 前端里会有 请求的问题 依赖问题 （amd cmd）
+
+// umd 兼容amd 和 cmd  + commonjs 不支持es6模块
+
+// commonjs规范  (基于文件读写的  如果依赖了某个文件我会进行文件读取) 动态的
+// 一个文件就是一个模块
+// 我想使用这个模块我就require
+// 我想把模块给别人用 module.exports导出
+
+// esModule规范 （每次你引用一个模块，发请求） 静态的  靠webpack编译   vite 就是靠发请求对请求来劫持 进行转义实现的
+// es6 -> 一个文件一个模块
+// 别人要用我 我就需要 export
+// 我要用别人我就import
+
+// es6Module / umd模块  webpack tree-shaking
+
 /**
  * ES6 模块的设计思想是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。
  * CommonJS 和 AMD 模块，都只能在运行时确定这些东西。比如，CommonJS 模块就是对象，输入时必须查找对象属性。
@@ -114,7 +137,6 @@ foo()
 
 //import { lastName as surname } from './profile.js';
 
-
 //import命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，不允许在加载模块的脚本里面，改写接口。
 
 /*
@@ -124,14 +146,13 @@ a = {}; // Syntax Error : 'a' is read-only;
 
 /**
  * 上面代码中，脚本加载了变量a，对其重新赋值就会报错，因为a是一个只读的接口。但是，如果a是一个对象，改写a的属性是允许的。
-*/
+ */
 
 /* 
 import {a} from './xxx.js'
 
 a.foo = 'hello'; // 合法操作
  */
-
 
 //import命令具有提升效果，会提升到整个模块的头部，首先执行。
 /* 
@@ -158,7 +179,6 @@ if (x === 1) {
 }
  */
 
-
 //除了指定加载某个输出值，还可以使用整体加载，即用星号（*）指定一个对象，所有输出值都加载在这个对象上面。
 /* 
 import * as circle from './circle';
@@ -176,7 +196,6 @@ import * as circle from './circle';
 circle.foo = 'hello';
 circle.area = function () {};
  */
-
 
 //export default命令，为模块指定默认输出。
 
@@ -273,7 +292,6 @@ export default var a = 1;
 
 //因为export default命令的本质是将后面的值，赋给default变量，所以可以直接将一个值写在export default之后。
 
-
 /* 
 // 正确
 export default 42;
@@ -301,7 +319,6 @@ export { each as forEach };
  */
 
 //上面代码的最后一行的意思是，暴露出forEach接口，默认指向each接口，即forEach和each指向同一个方法。
-
 
 //export default也可以用来输出类。
 /* 
@@ -372,7 +389,7 @@ import {db, users} from './constants/index';
 
 /**
  * CommonJS 的一个模块，就是一个脚本文件。require命令第一次加载该脚本，就会执行整个脚本，然后在内存生成一个对象。
-*/
+ */
 
 /* 
 {
@@ -388,9 +405,9 @@ import {db, users} from './constants/index';
 /**
  * 以后需要用到这个模块的时候，就会到exports属性上面取值。即使再次执行require命令，也不会再次执行该模块，而是到缓存之中取值。
  * 也就是说，CommonJS 模块无论加载多少次，都只会在第一次加载时运行一次，以后再加载，就返回第一次运行的结果，除非手动清除系统缓存
-*/
+ */
 
 /**
  * ES6 处理“循环加载”与 CommonJS 有本质的不同。
  * ES6 模块是动态引用，如果使用import从一个模块加载变量（即import foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用，需要开发者自己保证，真正取值的时候能够取到值。
-*/
+ */
